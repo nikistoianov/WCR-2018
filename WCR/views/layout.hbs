@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>World Cup Russia</title>
+
+    <link rel="icon" href="/favicon.ico">
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/table.css' />
+    <link rel='stylesheet' href='/stylesheets/util.css' />
+    <!--<script src="/public/javascripts/jquery-1.10.2.js"></script>-->
+    <script src="/public/javascripts/bootstrap.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        function adjust_offset() {
+            let container = $('.container-fluid')
+            let off = $('.navbar').outerHeight(true) - 50
+            container.css('padding-top', off + 'px')
+//            console.log(off);
+//            console.log(container);
+//            $('body').css('padding-top', $('.navbar-default').outerHeight(true) + 'px' );
+        }
+
+        $(window).resize(adjust_offset);
+        $(document).ready(adjust_offset);
+    </script>
+</head>
+<body>
+    <header>
+        <div class="navbar navbar-default navbar-fixed-top text-uppercase">
+            <div class="container">
+                <div class="navbar-header">
+                    <a title="2018 FIFA World Cup Russia™">
+                        <img src="/images/254645_w.png" width="70px">
+                    </a>
+
+                    <a href="/" class="navbar-brand">Групи</a>
+                    <a href="/rounds/1" class="navbar-brand">Първи кръг</a>
+                    <a href="/rounds/2" class="navbar-brand">Втори кръг</a>
+                    <a href="/rounds/3" class="navbar-brand">Трети кръг</a>
+                    <a href="/rounds/4" class="navbar-brand">Финален кръг</a>
+
+                    {{#if user.admin}}
+                        <a href="/game/create" class="navbar-btn">мач</a>
+                        <a href="/groups/create" class="navbar-btn">група</a>
+                    {{/if}}
+
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                {{#if user}}
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/user/details">({{user.name}})</a></li>
+                            <!--<li><a href="/article/create">New Article</a></li>-->
+                            <li><a href="/user/logout">Изход</a></li>
+                        </ul>
+                    </div>
+                {{/if}}
+                {{#unless user}}
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/user/register">Регистрация</a></li>
+                            <li><a href="/user/login">Вход</a></li>
+                        </ul>
+                    </div>
+                {{/unless}}
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid" style="padding-top: 41px">
+
+            <header class="section__header">
+                <h1 class="section__title">
+                    Фирмено състезание "Световно първенство по футбол Русия 2018"
+                </h1>
+                <h2 class="section__title">
+                    Победител : няма
+                </h2>
+            </header>
+
+        {{#if error }}
+            <h2>{{error}}</h2>
+        {{/if}}
+        {{{body}}}
+    </div>
+</body>
+<footer>
+    <div class="container modal-footer">
+        <p>&copy; 2018 - Nikolay Stoyanov</p>
+    </div>
+</footer>
+</html>

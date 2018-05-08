@@ -1,0 +1,149 @@
+<div class="container-table100 main-container">
+
+    <div class="wrap-table100">
+
+        <div class="table100 ver6">
+
+            <table data-vertable="ver2">
+
+                <caption class="btn-danger table__title">Групи</caption>
+
+                <thead>
+                    <tr class="row100 head">
+                        <th class="column100 date" data-column="column1">дата</th>
+                        <th class="column100 game" data-column="column1"></th>
+                        <th class="column100" data-column="column1">позиция</th>
+                        {{#each users}}
+                            <th class="column100" data-column="column2">{{this.name}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {{#each groups}}
+                        <tr class="row200">
+                        {{#if this.activeBet}}
+                            <td class="column100" colspan="{{this.span}}"><a href="{{this.href}}" class="btn resultbtn">Група {{this.name}}</a></td>
+                        {{else}}
+                            <td class="column100 delimiter" colspan="{{this.span}}">Група {{this.name}}</td>
+                        {{/if}}
+                        </tr>
+
+                        <tr class="row100">
+                            {{#if this.edithref}}
+                                <td class="column100 date" data-column="column1"><a href="{{this.edithref}}" class="btn resultbtn">{{this.date}}</a></td>
+                            {{else}}
+                                <td class="column100 date" data-column="column1">{{this.date}}</td>
+                            {{/if}}
+                            <td class="column100 game" data-column="column1">{{this.team1}}</td>
+                            <td class="column100 result">{{this.position1}}</td>
+                            {{#each this.bets}}
+                                {{#if this.hidden}}
+                                    <td class="column100 nomatch">скрит</td>
+                                {{else}}
+                                    <td class="column100{{this.className.position1}}">{{this.position1}} ({{this.points.position1}})</td>
+                                {{/if}}
+                            {{/each}}
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 date" data-column="column1"></td>
+                            <td class="column100 game" data-column="column1">{{this.team2}}</td>
+                            <td class="column100 result">{{this.position2}}</td>
+                            {{#each this.bets}}
+                                {{#if this.hidden}}
+                                    <td class="column100 nomatch">скрит</td>
+                                {{else}}
+                                    <td class="column100{{this.className.position2}}">{{this.position2}} ({{this.points.position2}})</td>
+                                {{/if}}
+                            {{/each}}
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 date" data-column="column1"></td>
+                            <td class="column100 game" data-column="column1">{{this.team3}}</td>
+                            <td class="column100 result">{{this.position3}}</td>
+                            {{#each this.bets}}
+                                {{#if this.hidden}}
+                                    <td class="column100 nomatch">скрит</td>
+                                {{else}}
+                                    <td class="column100{{this.className.position3}}">{{this.position3}} ({{this.points.position3}})</td>
+                                {{/if}}
+                            {{/each}}
+                        </tr>
+
+                        <tr class="row100">
+                            <td class="column100 date" data-column="column1"></td>
+                            <td class="column100 game" data-column="column1">{{this.team4}}</td>
+                            <td class="column100 result">{{this.position4}}</td>
+                            {{#each this.bets}}
+                                {{#if this.hidden}}
+                                    <td class="column100 nomatch">скрит</td>
+                                {{else}}
+                                    <td class="column100{{this.className.position4}}">{{this.position4}} ({{this.points.position4}})</td>
+                                {{/if}}
+                            {{/each}}
+                        </tr>
+
+                    {{/each}}
+
+                    <tr class="row100 footer">
+                        <th class="column100" colspan="3">точки за кръга</th>
+                        {{#each total.round}}
+                            <th class="column100 match">{{this}}</th>
+                        {{/each}}
+                    </tr>
+
+                    <tr class="row100 footer">
+                        <th class="column100" colspan="3">бонус точки</th>
+                        {{#each total.bonus}}
+                            <th class="column100 match">{{this}}</th>
+                        {{/each}}
+                    </tr>
+
+                    <tr class="row200">
+                        <td class="column100" colspan="{{groups.1.span}}">Прогноза за световен шампион</td>
+                    </tr>
+
+                    <tr class="row100">
+                        <td class="column100 date" data-column="column1">{{champRez.date}}</td>
+                        <td class="column100 game" data-column="column1"></td>
+                        <td class="column100 result" data-column="column2">{{champRez.champion}}</td>
+                        {{#each champs}}
+                            {{#if this.hidden}}
+                                <td class="column100 nomatch">скрит</td>
+                            {{else}}
+                                {{#if this.current}}
+                                    <td class="column100{{this.className}}"><a href="/{{this.href}}" class="btn resultbtn">{{this.champion}} ({{this.points}})</a></td>
+                                {{else}}
+                                    <td class="column100{{this.className}}">{{this.champion}} ({{this.points}})</td>
+                                {{/if}}
+                            {{/if}}
+                        {{/each}}
+                    </tr>
+
+                    <tr class="row100 footer-user">
+                        <th class="column100" colspan="3">участник</th>
+                        {{#each users}}
+                            <th class="column100">{{this.name}}</th>
+                        {{/each}}
+                    </tr>
+
+                    <tr class="row100 footer">
+                        <th class="column100 totalmatch" colspan="3">общо натрупани точки</th>
+                        {{#each total.total}}
+                            <th class="column100 totalmatch">{{this}}</th>
+                        {{/each}}
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+

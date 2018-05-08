@@ -1,0 +1,48 @@
+<div class="container body-content span=8 offset=2">
+    <div class="well">
+        <form class="form-horizontal" method="POST" action="/groups/newBet/{{group.id}}">
+            <fieldset>
+                <legend>Прогноза за група {{group.name}}</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="articleTitle">{{group.team1}}</label>
+                    <div class="col-sm-4 ">
+                        <input type="number" class="form-control" placeholder="прогноза" name="position1" value="{{bet.goal1}}" required >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="articleTitle">{{group.team2}}</label>
+                    <div class="col-sm-4 ">
+                        <input type="number" class="form-control" placeholder="прогноза" name="position2" value="{{bet.goal2}}" required >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="articleTitle">{{group.team3}}</label>
+                    <div class="col-sm-4 ">
+                        <input type="number" class="form-control" placeholder="прогноза" name="position3" value="{{bet.goal2}}" required >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="articleTitle">{{group.team4}}</label>
+                    <div class="col-sm-4 ">
+                        <input type="number" class="form-control" placeholder="прогноза" name="position4" value="{{bet.goal2}}" required >
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-4 control-label" for="articleContent">Content</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<textarea class="form-control" id="articleContent" rows="5" name="content" required></textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <!--<button type="reset" class="btn btn-default">Отказ</button>-->
+                        <a class="btn btn-default" href="/">Отказ</a>
+                        <button type="submit" class="btn btn-primary">Добави</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

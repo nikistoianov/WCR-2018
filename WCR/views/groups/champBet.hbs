@@ -1,0 +1,38 @@
+<div class="container body-content span=8 offset=2">
+    <div class="well">
+        <form class="form-horizontal" method="POST" action="/groups/champBet/{{bet.id}}">
+            <fieldset>
+                <legend>Прогноза за световен шампион</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Световен шампион</label>
+                    <div class="col-sm-4 ">
+                        <!--<div class="select">-->
+                        <!--<select class="column100 date" name="search_categories" id="search_categories">-->
+                        <!--<option value="1" selected="selected">Happy</option>-->
+                        <!--<option value="2">Great</option>-->
+                        <!--<option value="3">Nice Solution</option>-->
+                        <!--<option value="4">Awesome</option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+                        <select type="text" class="form-control" placeholder="прогноза" name="champion" value="{{bet.champion}}" required >
+                            <option value="1" disabled selected>изберете прогноза</option>
+                            <option value="Русия">Русия</option>
+                            <option value="Уругвай">Уругвай</option>
+                            <option value="Египет">Египет</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <!--<button type="reset" class="btn btn-default">Отказ</button>-->
+                        <a class="btn btn-default" href="/">Отказ</a>
+                        <button type="submit" class="btn btn-primary">Добави</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>
