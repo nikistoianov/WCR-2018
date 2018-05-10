@@ -16,12 +16,15 @@
 body {
     padding-top: 70px;
     padding-bottom: 20px;
+    background-image: url("../images/background-pattern.jpg");
+    background-size: 400px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -3033,6 +3036,7 @@ select[multiple].input-lg {
 .btn.resultbtn {
   border: 0px;
   padding: 0px 0px;
+  color: #23fffa;
 }
 
 .btn {
@@ -4203,6 +4207,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   min-height: 60px;
   margin-bottom: 21px;
   border: 1px solid transparent;
+  background-image: url('../images/background-top.jpg');
 }
 @media (min-width: 768px) {
   .navbar {

@@ -44,9 +44,9 @@
                                         <td class="column100 nomatch">скрит</td>
                                     {{else}}
                                         {{#if this.current}}
-                                            <td class="column100" data-column="column2"><a href="/{{this.href}}" id="1" class="btn resultbtn">{{this.result}} ({{this.points}})</a></td>
+                                            <td class="column100" data-column="column2"><a href="/{{this.href}}" id="1" class="btn resultbtn">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</a></td>
                                         {{else}}
-                                            <td class="column100{{this.className}}" data-column="column2">{{this.result}} ({{this.points}})</td>
+                                            <td class="column100{{this.className}}" data-column="column2">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</td>
                                         {{/if}}
                                     {{/if}}
                                 {{/each}}
