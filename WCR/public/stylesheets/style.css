@@ -277,6 +277,7 @@ th {
   }
   .navbar {
     display: none;
+
   }
   .btn > .caret,
   .dropup > .btn > .caret {
@@ -1131,7 +1132,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #18bc9c;
+  color: #fff;
   text-decoration: none;
 }
 a:hover,
@@ -3036,7 +3037,7 @@ select[multiple].input-lg {
 .btn.resultbtn {
   border: 0px;
   padding: 0px 0px;
-  color: #23fffa;
+    color: #23fffa;
 }
 
 .btn {
@@ -6837,7 +6838,7 @@ button.close {
 }
 table a:not(.btn),
 .table a:not(.btn) {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }
 table .dropdown-menu a,
 .table .dropdown-menu a {

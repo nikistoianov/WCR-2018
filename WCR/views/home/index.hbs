@@ -15,7 +15,7 @@
                     <th class="column100 game" data-column="column1"></th>
                     <th class="column100" data-column="column1">резултат</th>
                     {{#each users}}
-                        <th class="column100" data-column="column2">{{this.name}}</th>
+                        <th class="column100" data-column="column2"><a href="/user/details/{{id}}">{{this.name}}</a></th>
                     {{/each}}
                 </tr>
                 </thead>

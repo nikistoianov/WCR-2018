@@ -1,13 +1,15 @@
-const userController = require('./../controllers/user');
-const homeController = require('./../controllers/home');
-const articleController = require('./../controllers/article');
-const gameController = require('./../controllers/game');
+const userController = require('./../controllers/user')
+const homeController = require('./../controllers/home')
+// const articleController = require('./../controllers/article');
+const gameController = require('./../controllers/game')
 
 module.exports = (app) => {
     app.get('/', homeController.index);
 
     app.get('/rounds/:id', gameController.roundGet);
     app.get('/group', gameController.groupGet);
+
+    app.get('/user/details/:id', userController.details);
 
     app.get('/user/register', userController.registerGet);
     app.post('/user/register', userController.registerPost);

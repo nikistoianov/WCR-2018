@@ -7,19 +7,14 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">Световен шампион</label>
                     <div class="col-sm-4 ">
-                        <!--<div class="select">-->
-                        <!--<select class="column100 date" name="search_categories" id="search_categories">-->
-                        <!--<option value="1" selected="selected">Happy</option>-->
-                        <!--<option value="2">Great</option>-->
-                        <!--<option value="3">Nice Solution</option>-->
-                        <!--<option value="4">Awesome</option>-->
-                        <!--</select>-->
-                        <!--</div>-->
                         <select type="text" class="form-control" placeholder="прогноза" name="champion" value="{{bet.champion}}" required >
                             <option value="1" disabled selected>изберете прогноза</option>
-                            <option value="Русия">Русия</option>
-                            <option value="Уругвай">Уругвай</option>
-                            <option value="Египет">Египет</option>
+                            {{#each teams}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+
+                            <!--<option value="Уругвай">Уругвай</option>-->
+                            <!--<option value="Египет">Египет</option>-->
                         </select>
                     </div>
                 </div>

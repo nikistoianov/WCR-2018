@@ -5,13 +5,14 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('softuniblog:server');
+var debug = require('debug')('wcr-2018:server');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
+// var port = normalizePort(process.env.PORT || '4321');
 var port = normalizePort(process.env.PORT || '1234');
 app.set('port', port);
 
@@ -30,6 +31,8 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 console.log('http://localhost:' + port)
+// console.log('http://localhost:' + port + '/groups/champBet')
+// console.log('http://localhost:' + port + '/user/details/5ae6ad741da0490cc861b791')
 
 /**
  * Normalize a port into a number, string, or false.

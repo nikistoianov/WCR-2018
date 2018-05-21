@@ -56,8 +56,7 @@
                 {{#if user}}
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/user/details">({{user.name}})</a></li>
-                            <!--<li><a href="/article/create">New Article</a></li>-->
+                            <li><a href="/user/details/{{user.id}}">({{user.name}})</a></li>
                             <li><a href="/user/logout">Изход</a></li>
                         </ul>
                     </div>
@@ -80,13 +79,15 @@
                 <h1 class="section__title">
                     Фирмено състезание "Световно първенство по футбол Русия 2018"
                 </h1>
-                <h2 class="section__title">
-                    Победител : няма
-                </h2>
+                {{#if champRez.winner}}
+                    <h2 class="section__title">
+                        Победител : {{champRez.winner}}
+                    </h2>
+                {{/if}}
             </header>
 
         {{#if error }}
-            <h2>{{error}}</h2>
+            <h2 class="section__title nomatch">{{error}}</h2>
         {{/if}}
         {{{body}}}
     </div>

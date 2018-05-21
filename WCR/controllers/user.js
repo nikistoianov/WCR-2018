@@ -1,5 +1,9 @@
-const User = require('mongoose').model('User');
-const encryption = require('./../utilities/encryption');
+const User = require('mongoose').model('User')
+const Bet = require('mongoose').model('Bet')
+const GrBet = require('mongoose').model('GrBet')
+const ChampBet = require('mongoose').model('ChampBet')
+const encryption = require('./../utilities/encryption')
+const gameController = require('./game')
 
 module.exports = {
     registerGet: (req, res) => {
@@ -78,5 +82,56 @@ module.exports = {
     logout: (req, res) => {
         req.logOut();
         res.redirect('/');
+    },
+
+    details: (req, res) => {
+        let id = req.params.id
+        let view = 'user/details'
+
+        User.findById(id).then(user => {
+            Bet.find({author: user._id}).populate('match').then(matchbets => {
+                GrBet.find({author: user._id}).populate('group').then(grbets => {
+                    ChampBet.findOne({author: user._id}).then(champbet => {
+
+                        let info = {
+                            name: user.name,
+                            userName: user.userName,
+                            betsCount: 0,
+                            pointsMatch: 0,
+                            pointsGroup: 0,
+                            pointsChamp: 0,
+                            pointsAll: 0
+                        }
+
+                        if (champbet !== null) {
+                            info.betsCount++
+                            if (gameController.worldChampObj.champion === champbet.champion) {
+                                info.pointsChamp += 10
+                                info.pointsAll += 10
+                            }
+                        }
+
+                        for (let bet of matchbets) {
+                            info.betsCount++
+                            let points = Number(gameController.calcMatchPoints(bet.match, bet))
+                            info.pointsMatch += points
+                            info.pointsAll += points
+                        }
+
+                        for (let bet of grbets) {
+                            info.betsCount++
+                            let gr = gameController.calcGroupPoints(bet.group, bet)
+                            let grPoints = Number(gr.position1) + Number(gr.position2) + Number(gr.position3) + Number(gr.position4)
+                            info.pointsGroup += grPoints
+                            info.pointsAll += grPoints
+                        }
+
+                        res.render(view, {info: info})
+                    })
+                })
+            })
+        }).catch(err => {
+            res.render(view, {error: 'Не е открит участник!'})
+        })
     }
-};
+}

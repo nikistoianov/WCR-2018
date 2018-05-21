@@ -1,11 +1,10 @@
-// const Article = require('mongoose').model('Article');
-const Match = require('mongoose').model('Match');
-const Bet = require('mongoose').model('Bet');
-const User = require('mongoose').model('User');
-const Group = require('mongoose').model('Group');
-const GrBet = require('mongoose').model('GrBet');
-const ChampBet = require('mongoose').model('ChampBet');
-
+const Match = require('mongoose').model('Match')
+const Bet = require('mongoose').model('Bet')
+const User = require('mongoose').model('User')
+const Group = require('mongoose').model('Group')
+const GrBet = require('mongoose').model('GrBet')
+const ChampBet = require('mongoose').model('ChampBet')
+const Result = require('mongoose').model('Result')
 
 let wDate = new Date(2018, 6 - 1, 14, 18, 0, 0, 0)
 let worldChampObj = {
@@ -16,16 +15,10 @@ let worldChampObj = {
 function dt(num) {
     return Number(num) < 10 ? '0' + num : num
 }
-// let dt = function (num) {
-//     return Number(num) < 10 ? '0' + num : num
-// }
 
 function dtf(date) {
     return dt(date.getDate())  + "." + dt(date.getMonth()+1) + " " + dt(date.getHours()) + ":" + dt(date.getMinutes())
 }
-// let dtf = function (date) {
-//     return dt(date.getDate())  + "." + dt(date.getMonth()+1) + " " + dt(date.getHours()) + ":" + dt(date.getMinutes())
-// }
 
 let calcPoints = function (match, bet) {
     if (match.goal1 === undefined) {
@@ -218,7 +211,7 @@ function getRound(req, id, users, matches, bets, prevPoints) {
 
 }
 
-function getGroups(req, users, groups, bets, champbets) {
+function getGroups(req, users, groups, bets, champbets, final) {
     let currentUser = req.isAuthenticated() ? req.user.userName : ''
     let admin = req.isAuthenticated() && req.user.admin ? true : false
 
@@ -292,7 +285,7 @@ function getGroups(req, users, groups, bets, champbets) {
 
     let champArr = []
     for (let user of users) {
-        let isCurrent = (user.userName === currentUser) && (wDate > new Date(Date.now()))
+        let isCurrent = (user.userName === currentUser) && (final.date > new Date(Date.now()))
         let champObj = {
             champion: 'няма',
             href: 'groups/champBet',
@@ -304,14 +297,14 @@ function getGroups(req, users, groups, bets, champbets) {
                 champObj.champion = champbet.champion
                 champObj.href += '/' + champbet.id
 
-                if (worldChampObj.champion !== 'няма' && worldChampObj.champion === champbet.champion) {
+                if (final.champion !== 'няма' && final.champion === champbet.champion) {
                     champObj.points = 10
                     champObj.className = ' totalmatch'
                 } else {
                     champObj.className = ' nomatch'
                 }
 
-                if ((user.userName !== currentUser) && (wDate > new Date(Date.now())) && !admin)
+                if ((user.userName !== currentUser) && (final.date > new Date(Date.now())) && !admin)
                     champObj.hidden = true
 
                 break
@@ -336,11 +329,17 @@ function getGroups(req, users, groups, bets, champbets) {
     //     roundArr = getGroupResults(i, users, matches, mbets, roundArr);
     // }
 
+    let champ = {
+        champion: final.champion,
+        date: dtf(final.date),
+        winner: final.winner !== undefined ? final.winner.name : 'няма'
+    }
+    // console.log(champ);
     return {
         users: users,
         groups: groupsArr,
         champs: champArr,
-        champRez: worldChampObj,
+        champRez: champ,
         total: {round: resultsArr, bonus: bonusArr, total: roundArr}
     }
 }
@@ -352,9 +351,14 @@ module.exports = {
             Group.find({}).then(groups => {
                 GrBet.find({}).populate('group').populate('author').then(bets => {
                     ChampBet.find({}).populate('author').then(champbets => {
-                        let result = getGroups(req, users, groups, bets, champbets)
-                        // console.log(result);
-                        res.render('home/group', result)
+                        Result.findOne({}).populate('winner').then(final => {
+                            // console.log(users);
+                            let result = getGroups(req, users, groups, bets, champbets, final)
+                            // console.log(result);
+                            res.render('home/group', result)
+                        }).catch(err => {
+                            res.render('home/error', {error: 'Неуспешно прочитане на резултатите!'})
+                        })
                     })
                 })
             })
@@ -378,13 +382,22 @@ module.exports = {
                     Group.find({}).then(groups => {
                         GrBet.find({}).populate('group').populate('author').then(grbets => {
                             ChampBet.find({}).populate('author').then(champbets => {
-                                let groupResult = getGroups(req, users, groups, grbets, champbets)
-                                let result = getRound(req, id, users, matches, bets, groupResult.total.total)
-                                res.render('home/index', result)
+                                Result.findOne({}).populate('winner').then(final => {
+                                    let groupResult = getGroups(req, users, groups, grbets, champbets, final)
+                                    let result = getRound(req, id, users, matches, bets, groupResult.total.total)
+                                    result.champRez = groupResult.champRez
+
+                                    let last = result.matches.pop()
+                                    if (last.team1 !== 'предстоящи мачове')
+                                        result.matches.push(last)
+
+                                    res.render('home/index', result)
+                                }).catch(err => {
+                                    res.render('home/error', {error: 'Неуспешно прочитане на резултатите!'})
+                                })
                             })
                         })
                     })
-
                 })
             })
         })
@@ -882,20 +895,24 @@ module.exports = {
     },
 
     champNewBetGet: (req, res) => {
-        // let id = req.params.id
-        // Group.findById(id).then(group => {
-            res.render('groups/champBet', {})
-        // })
+        let view = 'groups/champBet'
+        Group.find().then(groups => {
+            let teams = []
+            for (let group of groups) {
+                teams.push(group.team1)
+                teams.push(group.team2)
+                teams.push(group.team3)
+                teams.push(group.team4)
+            }
+
+            res.render(view, {teams: teams})
+        })
     },
 
     champNewBetPost: (req, res) => {
         let args = req.body
-        console.log(args);
-        // let id = req.params.id
-        // Group.findById(id).then(group => {
-        // res.redirect('/')
-        // res.render('groups/champBet', {bet : {champion: 'няма'}})
-        // })
+        let view = 'groups/champBet'
+
         let errorMsg = ''
         if(!req.isAuthenticated()) {
             errorMsg = 'Трябва да сте влезнали в профила си!'
@@ -906,7 +923,7 @@ module.exports = {
         }
 
         if(errorMsg) {
-            res.render('groups/champBet', {error: errorMsg})
+            res.render(view, {error: errorMsg})
             return
         }
 
@@ -917,19 +934,36 @@ module.exports = {
 
         ChampBet.create(betArgs).then(bet => {
             res.redirect('/')
+        }).catch(err => {
+            res.render(view, {error: err.message})
         })
     },
 
     champEditBetGet: (req, res) => {
         let id = req.params.id
+        let view = 'groups/champBet'
+
         ChampBet.findById(id).then(bet => {
-            res.render('groups/champBet', {bet: bet})
+            Group.find().then(groups => {
+                let teams = []
+                for (let group of groups) {
+                    teams.push(group.team1)
+                    teams.push(group.team2)
+                    teams.push(group.team3)
+                    teams.push(group.team4)
+                }
+
+                res.render(view, {teams: teams, bet: bet})
+            })
+        }).catch(err => {
+            res.render(view, {error: 'Не е открита прогнозата в базата данни!'})
         })
     },
 
     champEditBetPost: (req, res) => {
         let id = req.params.id
         let args = req.body
+        let view = 'groups/champBet'
 
         ChampBet.findById(id).populate('author').then(bet => {
             let errorMsg = ''
@@ -944,19 +978,27 @@ module.exports = {
             }
             // console.log(errorMsg);
             if(errorMsg) {
-                res.render('groups/champBet', {error: errorMsg, bet: bet})
+                res.render(view, {error: errorMsg, bet: bet})
                 return
             }
 
             bet.champion = args.champion
             bet.save(err => {
                 if (err) {
-                    res.render('groups/champBet', {error: err.message, bet: bet});
+                    res.render(view, {error: err.message, bet: bet});
                 } else {
                     res.redirect('/');
                 }
             });
+        }).catch(err => {
+            res.render(view, {error: 'Не е открита прогнозата в базата данни!'})
         })
-    }
+    },
+
+    calcMatchPoints: calcPoints,
+
+    calcGroupPoints: calcGroupPoints,
+
+    worldChampObj: worldChampObj
 
 }

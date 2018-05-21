@@ -1,0 +1,39 @@
+<div class="container body-content span=8 offset=2">
+    <div class="well">
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <legend>Статистика за участник: {{info.name}}</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Потребителско име</label>
+                    <div class="col-sm-3 control-label">{{info.userName}}</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Брой прогнози</label>
+                    <div class="col-sm-3 control-label">{{info.betsCount}}</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Точки от прогнози за мачове</label>
+                    <div class="col-sm-3 control-label">{{info.pointsMatch}}</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Точки от прогнози за групи</label>
+                    <div class="col-sm-3 control-label">{{info.pointsGroup}}</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Точки от прогноза за световен шампион</label>
+                    <div class="col-sm-3 control-label">{{info.pointsChamp}}</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Общо точки /без бонуси/</label>
+                    <div class="col-sm-3 control-label"><b>{{info.pointsAll}}</b></div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<div class="col-sm-4 col-sm-offset-4">-->
+                        <!--<a class="btn btn-default" href="/">Отказ</a>-->
+                        <!--<button type="submit" class="btn btn-primary">Вход</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </fieldset>
+        </form>
+    </div>
+</div>
