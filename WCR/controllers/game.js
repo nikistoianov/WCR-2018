@@ -219,6 +219,11 @@ function getGroups(req, users, groups, bets, champbets, final) {
     let resultsArr = []
     let bonusArr = []
     let roundArr = []
+
+    for (let i = 0; i < users.length; i++) {
+        resultsArr[i] = 0
+    }
+
     for (let group of groups) {
 
         let groupObj = {
@@ -271,7 +276,7 @@ function getGroups(req, users, groups, bets, champbets, final) {
 
             groupObj.bets.push(betObj)
 
-            if (resultsArr[i] === undefined) {resultsArr[i] = 0}
+            // if (resultsArr[i] === undefined) {resultsArr[i] = 0}
             resultsArr[i] += betObj.points.position1 + betObj.points.position2 + betObj.points.position3 + betObj.points.position4
 
             i++
@@ -340,7 +345,8 @@ function getGroups(req, users, groups, bets, champbets, final) {
         groups: groupsArr,
         champs: champArr,
         champRez: champ,
-        total: {round: resultsArr, bonus: bonusArr, total: roundArr}
+        total: {round: resultsArr, bonus: bonusArr, total: roundArr},
+        columns: users.length + 3
     }
 }
 
@@ -352,9 +358,7 @@ module.exports = {
                 GrBet.find({}).populate('group').populate('author').then(bets => {
                     ChampBet.find({}).populate('author').then(champbets => {
                         Result.findOne({}).populate('winner').then(final => {
-                            // console.log(users);
                             let result = getGroups(req, users, groups, bets, champbets, final)
-                            // console.log(result);
                             res.render('home/group', result)
                         }).catch(err => {
                             res.render('home/error', {error: 'Неуспешно прочитане на резултатите!'})
