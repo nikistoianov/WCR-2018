@@ -6,11 +6,11 @@ const GrBet = require('mongoose').model('GrBet')
 const ChampBet = require('mongoose').model('ChampBet')
 const Result = require('mongoose').model('Result')
 
-let wDate = new Date(2018, 6 - 1, 14, 18, 0, 0, 0)
-let worldChampObj = {
-    champion: 'няма',
-    date: dtf(wDate)
-}
+// let wDate = new Date(2018, 6 - 1, 14, 18, 0, 0, 0)
+// let worldChampObj = {
+//     champion: 'няма',
+//     date: dtf(wDate)
+// }
 
 function dt(num) {
     return Number(num) < 10 ? '0' + num : num
@@ -917,29 +917,34 @@ module.exports = {
         let args = req.body
         let view = 'groups/champBet'
 
-        let errorMsg = ''
-        if(!req.isAuthenticated()) {
-            errorMsg = 'Трябва да сте влезнали в профила си!'
-        } else if(wDate < new Date(Date.now())) {
-            errorMsg = 'Времето за прогноза е изтекло!'
-        } else if (args.champion === undefined) {
-            errorMsg = 'Не е избрана прогноза!'
-        }
+        Result.findOne({}).populate('winner').then(final => {
+            let errorMsg = ''
+            if(!req.isAuthenticated()) {
+                errorMsg = 'Трябва да сте влезнали в профила си!'
+            } else if(final.date < new Date(Date.now())) {
+                errorMsg = 'Времето за прогноза е изтекло!'
+            } else if (args.champion === undefined) {
+                errorMsg = 'Не е избрана прогноза!'
+            }
 
-        if(errorMsg) {
-            res.render(view, {error: errorMsg})
-            return
-        }
+            if(errorMsg) {
+                res.render(view, {error: errorMsg})
+                return
+            }
 
-        let betArgs = {
-            champion: args.champion,
-            author: req.user.id
-        }
+            let betArgs = {
+                champion: args.champion,
+                author: req.user.id
+            }
 
-        ChampBet.create(betArgs).then(bet => {
-            res.redirect('/')
+            ChampBet.create(betArgs).then(bet => {
+                res.redirect('/')
+            }).catch(err => {
+                res.render(view, {error: err.message})
+            })
         }).catch(err => {
-            res.render(view, {error: err.message})
+            // console.log(err);
+            res.render('home/error', {error: 'Неуспешно прочитане на резултатите!'})
         })
     },
 
@@ -970,30 +975,33 @@ module.exports = {
         let view = 'groups/champBet'
 
         ChampBet.findById(id).populate('author').then(bet => {
-            let errorMsg = ''
-            if(!req.isAuthenticated()) {
-                errorMsg = 'Трябва да сте влезнали в профила си!'
-            } else if(wDate < new Date(Date.now())) {
-                errorMsg = 'Времето за прогноза е изтекло!'
-            } else if (args.champion === undefined) {
-                errorMsg = 'Не е избрана прогноза!'
-            } else if(req.user.userName !== bet.author.userName) {
-                errorMsg = 'Не сте автор на прогнозата!';
-            }
-            // console.log(errorMsg);
-            if(errorMsg) {
-                res.render(view, {error: errorMsg, bet: bet})
-                return
-            }
-
-            bet.champion = args.champion
-            bet.save(err => {
-                if (err) {
-                    res.render(view, {error: err.message, bet: bet});
-                } else {
-                    res.redirect('/');
+            // console.log(bet)
+            Result.findOne({}).populate('winner').then(final => {
+                let errorMsg = ''
+                if(!req.isAuthenticated()) {
+                    errorMsg = 'Трябва да сте влезнали в профила си!'
+                } else if(final.date < new Date(Date.now())) {
+                    errorMsg = 'Времето за прогноза е изтекло!'
+                } else if (args.champion === undefined) {
+                    errorMsg = 'Не е избрана прогноза!'
+                } else if(req.user.userName !== bet.author.userName) {
+                    errorMsg = 'Не сте автор на прогнозата!';
                 }
-            });
+                // console.log(errorMsg);
+                if(errorMsg) {
+                    res.render(view, {error: errorMsg, bet: bet})
+                    return
+                }
+
+                bet.champion = args.champion
+                bet.save(err => {
+                    if (err) {
+                        res.render(view, {error: err.message, bet: bet});
+                    } else {
+                        res.redirect('/');
+                    }
+                })
+            })
         }).catch(err => {
             res.render(view, {error: 'Не е открита прогнозата в базата данни!'})
         })
@@ -1001,8 +1009,6 @@ module.exports = {
 
     calcMatchPoints: calcPoints,
 
-    calcGroupPoints: calcGroupPoints,
-
-    worldChampObj: worldChampObj
+    calcGroupPoints: calcGroupPoints
 
 }
