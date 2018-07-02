@@ -38,7 +38,7 @@ body {
 input,
 select,
 textarea {
-    max-width: 280px;
+    /*max-width: 280px;*/
 }
 
 
@@ -1619,6 +1619,14 @@ pre code {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
+}
+.container.container-details {
+  width: 708px;
+}
+@media (max-width: 768px) {
+  .container.container-details {
+    width: 98%;
+  }
 }
 @media (min-width: 768px) {
   .container {

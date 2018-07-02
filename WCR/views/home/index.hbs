@@ -22,70 +22,70 @@
 
                 <tbody>
 
-                    {{#each matches}}
-                        {{#if this.isSeparator}}
-                            <tr class="row200">
-                                <td class="column100 delimiter" colspan="{{this.span}}">{{this.team1}}</td>
-                            </tr>
-                        {{else}}
-                            <tr class="row100">
-                                <td class="column100 date" data-column="column1">{{this.date}}</td>
+                {{#each matches}}
+                    {{#if this.isSeparator}}
+                        <tr class="row200">
+                            <td class="column100 delimiter" colspan="{{this.span}}">{{this.team1}}</td>
+                        </tr>
+                    {{else}}
+                        <tr class="row100">
+                            <td class="column100 date" data-column="column1">{{this.date}}</td>
 
-                                {{#if this.href}}
-                                    <td class="column100 game" data-column="column1"><a href="/game/matchedit/{{this.href}}" class="btn resultbtn">{{this.team1}} : {{this.team2}}</a></td>
-                                    <td class="column100 result" data-column="column2"><a href="/game/matchresult/{{this.href}}" class="btn resultbtn">{{this.result}}</a></td>
+                            {{#if this.href}}
+                                <td class="column100 game" data-column="column1"><a href="/game/matchedit/{{this.href}}" class="btn resultbtn">{{this.team1}} : {{this.team2}}</a></td>
+                                <td class="column100 result totalmatch" data-column="column2"><a href="/game/matchresult/{{this.href}}" class="btn resultbtn">{{this.result}}</a></td>
+                            {{else}}
+                                <td class="column100 game" data-column="column1">{{this.team1}} : {{this.team2}}</td>
+                                <td class="column100 result totalmatch" data-column="column2">{{this.result}}</td>
+                            {{/if}}
+
+                            {{#each this.bets}}
+                                {{#if this.hidden}}
+                                    <td class="column100 nomatch">скрит</td>
                                 {{else}}
-                                    <td class="column100 game" data-column="column1">{{this.team1}} : {{this.team2}}</td>
-                                    <td class="column100 result" data-column="column2">{{this.result}}</td>
-                                {{/if}}
-
-                                {{#each this.bets}}
-                                    {{#if this.hidden}}
-                                        <td class="column100 nomatch">скрит</td>
+                                    {{#if this.current}}
+                                        <td class="column100" data-column="column2"><a href="/{{this.href}}" id="1" class="btn resultbtn">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</a></td>
                                     {{else}}
-                                        {{#if this.current}}
-                                            <td class="column100" data-column="column2"><a href="/{{this.href}}" id="1" class="btn resultbtn">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</a></td>
-                                        {{else}}
-                                            <td class="column100{{this.className}}" data-column="column2">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</td>
-                                        {{/if}}
+                                        <td class="column100{{this.className}}" data-column="column2">{{this.result}}{{#if this.points}} ({{this.points}}){{/if}}</td>
                                     {{/if}}
-                                {{/each}}
+                                {{/if}}
+                            {{/each}}
 
-                            </tr>
-                        {{/if}}
+                        </tr>
+                    {{/if}}
+                {{/each}}
+
+                <!--<tr class="row200">-->
+                <!--<td class="column100" colspan="7">Полуфинали</td>-->
+                <!--</tr>-->
+
+                <tr class="row100 footer">
+                    <th class="column100 match" colspan="3">точки за кръга</th>
+                    {{#each total.round}}
+                        <th class="column100 match">{{this}}</th>
                     {{/each}}
+                </tr>
 
-                    <!--<tr class="row200">-->
-                        <!--<td class="column100" colspan="7">Полуфинали</td>-->
-                    <!--</tr>-->
+                <tr class="row100 footer">
+                    <th class="column100 match" colspan="3">бонус точки</th>
+                    {{#each total.bonus}}
+                        <th class="column100 match">{{this}}</th>
+                    {{/each}}
+                </tr>
 
-                    <tr class="row100 footer">
-                        <th class="column100" colspan="3">точки за кръга</th>
-                        {{#each total.round}}
-                            <th class="column100 match">{{this}}</th>
-                        {{/each}}
-                    </tr>
+                <tr class="row100 footer-user">
+                    <th class="column100" colspan="3">участник</th>
+                    {{#each users}}
+                        <th class="column100">{{this.name}}</th>
+                    {{/each}}
+                </tr>
 
-                    <tr class="row100 footer">
-                        <th class="column100" colspan="3">бонус точки</th>
-                        {{#each total.bonus}}
-                            <th class="column100 match">{{this}}</th>
-                        {{/each}}
-                    </tr>
-
-                    <tr class="row100 footer-user">
-                        <th class="column100" colspan="3">участник</th>
-                        {{#each users}}
-                            <th class="column100">{{this.name}}</th>
-                        {{/each}}
-                    </tr>
-
-                    <tr class="row100 footer">
-                        <th class="column100 totalmatch" colspan="3">общо натрупани точки</th>
-                        {{#each total.total}}
-                            <th class="column100 totalmatch">{{this}}</th>
-                        {{/each}}
-                    </tr>
+                <tr class="row100 footer">
+                    <th class="column100 totalmatch" colspan="3">общо натрупани точки</th>
+                    {{#each total.total}}
+                        <th class="column100 totalmatch">{{this}}</th>
+                    {{/each}}
+                </tr>
 
                 </tbody>
             </table>

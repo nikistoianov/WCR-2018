@@ -23,6 +23,11 @@
     src: url('../fonts/Constantine.ttf');
 }
 
+@font-face {
+    font-family: Fifa;
+    src: url('../fonts/FIFA_World_Cup_2018.ttf');
+}
+
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 * {
@@ -129,6 +134,7 @@ iframe {
 }
 
 .wrap-table100 {
+    /*align-content: center;*/
     /*width: 1300px;*/
 }
 
@@ -195,12 +201,13 @@ th, td {
     padding-bottom: 8px;
     text-align: center;
     background-color: rgba(255,255,255,0.2);
-    font-size: 16px;
+    /*font-size: 20px;*/
 }
 
 th {
-    font-family: Montserrat-Medium;
-    font-size: 14px;
+    /*font-family: Montserrat-Medium;*/
+    font-family: Fifa;
+    font-size: 16px;
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
@@ -269,22 +276,25 @@ th {
 
 .match {
     color: #6be1ff;
-    font-size: 18px;
+    font-size: 19px;
 }
 
 .nomatch {
     color: #f95462;
+    font-size: 18px;
 }
 
 td {
-    font-family: Montserrat-Regular;
-    font-size: 14px;
+    font-family: Fifa;
+    /*font-family: Montserrat-Regular;*/
+    font-size: 16px;
     color: #fff;
     line-height: 1.4;
 }
 
 .table__title {
-    font-size: 20px;
+    font-family: Fifa;
+    font-size: 30px;
 }
 
 .section__title {
@@ -294,5 +304,15 @@ td {
 }
 
 .delimiter {
-    font-family: Font-delimiter;
+    font-family: Fifa;
+    font-size: 22px;
+}
+
+.navbar__title {
+    font-family: Fifa;
+    font-size: 21px;
+}
+
+.navbar__font {
+    font-family: Fifa;
 }
